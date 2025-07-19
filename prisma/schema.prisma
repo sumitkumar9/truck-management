@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id         Int      @id @default(autoincrement())
+  first_name String
+  last_name  String
+  email      String   @unique
+  password   String
+  role       Role     @default(VIEWER)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Trucks {
+  id             Int       @id @default(autoincrement())
+  number         String
+  model          String
+  fuel_type      Fuel_Type @default(DIESEL)
+  is_active      Boolean   @default(true)
+  current_status Status    @default(AVAILABLE)
+  created_by     String
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+}
+
+model Drivers {
+  id             Int      @id @default(autoincrement())
+  first_name     String
+  last_name      String
+  license_number String
+  phone          String
+  is_active      Boolean
+  created_by     String
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+}
+
+model Clients {
+  id             Int      @id @default(autoincrement())
+  name           String
+  contact_person String
+  phone          String
+  email          String
+  address        String
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+}
+
+model Trips {
+  id                  Int         @id @default(autoincrement())
+  client_id           String
+  driver_id           String
+  start_date          DateTime
+  end_date            DateTime
+  origin_address      String
+  destination_address String
+  base_revenue        Float
+  additional_charges  Float       @default(0)
+  total_revenue       Float
+  status              Trip_Status
+  created_by          String
+  created_at          DateTime    @default(now())
+  updated_at          DateTime    @updatedAt
+}
+
+model Trip_Expenses {
+  id           Int          @id @default(autoincrement())
+  trip_id      String
+  type         Expense_Type
+  amount       Float
+  description  String
+  expense_date DateTime
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+}
+
+enum Role {
+  ADMIN
+  STAFF
+  VIEWER
+}
+
+enum Status {
+  AVAILABLE
+  BUSY
+  MAINTENANCE
+}
+
+enum Expense_Type {
+  FUEL
+  TOLL
+  REPAIR
+  DRIVER
+  OTHER
+}
+
+enum Fuel_Type {
+  DIESEL
+  PETROL
+  CNG
+  ELECTRIC
+}
+
+enum Trip_Status {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  DELAYED
+}
