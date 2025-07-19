@@ -21,32 +21,54 @@ model Users {
   email      String   @unique
   password   String
   role       Role     @default(VIEWER)
+  is_active  Boolean  @default(true)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  // Relationships
+  createdTrips Trips[]
+  createdDrivers Drivers[]
+  createdTrucks Trucks[]
+  createdClients Clients[]
+
+  @@index([role])
+  @@index([is_active])
 }
 
 model Trucks {
   id             Int       @id @default(autoincrement())
-  number         String
+  number         String   @unique
   model          String
   fuel_type      Fuel_Type @default(DIESEL)
   is_active      Boolean   @default(true)
   current_status Status    @default(AVAILABLE)
-  created_by     String
+  created_by     Int
   created_at     DateTime  @default(now())
   updated_at     DateTime  @updatedAt
+  trips Trips[]
+  creator Users @relation(fields: [created_by], references: [id])
+
+  @@index([current_status])
+  @@index([is_active])
+  @@index([created_by])
 }
 
 model Drivers {
   id             Int      @id @default(autoincrement())
   first_name     String
   last_name      String
-  license_number String
+  license_number String   @unique
   phone          String
-  is_active      Boolean
-  created_by     String
+  is_active      Boolean  @default(true)
+  created_by     Int
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
+  trips Trips[]
+  creator Users @relation(fields: [created_by], references: [id])
+
+  @@index([license_number])
+  @@index([is_active])
+  @@index([created_by])
 }
 
 model Clients {
@@ -54,38 +76,71 @@ model Clients {
   name           String
   contact_person String
   phone          String
-  email          String
+  email          String   @unique
   address        String
+  is_active      Boolean  @default(true)
+  created_by     Int?
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
+
+  // Relationships
+  trips Trips[]
+  creator Users? @relation(fields: [created_by], references: [id])
+
+  @@index([is_active])
+  @@index([created_by])
 }
 
 model Trips {
   id                  Int         @id @default(autoincrement())
-  client_id           String
-  driver_id           String
+  client_id           Int
+  driver_id           Int
+  truck_id            Int
   start_date          DateTime
-  end_date            DateTime
+  end_date            DateTime?
   origin_address      String
   destination_address String
   base_revenue        Float
   additional_charges  Float       @default(0)
   total_revenue       Float
   status              Trip_Status
-  created_by          String
+  created_by          Int
   created_at          DateTime    @default(now())
   updated_at          DateTime    @updatedAt
+
+  // Relationships
+  client        Clients         @relation(fields: [client_id], references: [id], onDelete: Restrict)
+  driver        Drivers         @relation(fields: [driver_id], references: [id], onDelete: Restrict)
+  truck         Trucks          @relation(fields: [truck_id], references: [id], onDelete: Restrict)
+  creator       Users           @relation(fields: [created_by], references: [id], onDelete: Restrict)
+  tripExpenses TripExpenses[]
+
+  @@index([client_id])
+  @@index([driver_id])
+  @@index([truck_id])
+  @@index([created_by])
+  @@index([status])
+  @@index([start_date])
+  @@index([status, start_date])
+  @@index([truck_id, status])
 }
 
-model Trip_Expenses {
+model TripExpenses {
   id           Int          @id @default(autoincrement())
-  trip_id      String
+  trip_id      Int
   type         Expense_Type
   amount       Float
   description  String
   expense_date DateTime
   created_at   DateTime     @default(now())
   updated_at   DateTime     @updatedAt
+
+  // Relationships
+  trip Trips @relation(fields: [trip_id], references: [id], onDelete: Cascade)
+
+  @@index([trip_id])
+  @@index([expense_date])
+  @@index([type])
 }
 
 enum Role {
