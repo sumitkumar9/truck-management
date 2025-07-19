@@ -26,9 +26,9 @@ model Users {
   updated_at DateTime @updatedAt
 
   // Relationships
-  createdTrips Trips[]
+  createdTrips   Trips[]
   createdDrivers Drivers[]
-  createdTrucks Trucks[]
+  createdTrucks  Trucks[]
   createdClients Clients[]
 
   @@index([role])
@@ -37,7 +37,7 @@ model Users {
 
 model Trucks {
   id             Int       @id @default(autoincrement())
-  number         String   @unique
+  number         String    @unique
   model          String
   fuel_type      Fuel_Type @default(DIESEL)
   is_active      Boolean   @default(true)
@@ -45,8 +45,8 @@ model Trucks {
   created_by     Int
   created_at     DateTime  @default(now())
   updated_at     DateTime  @updatedAt
-  trips Trips[]
-  creator Users @relation(fields: [created_by], references: [id])
+  trips          Trips[]
+  creator        Users     @relation(fields: [created_by], references: [id])
 
   @@index([current_status])
   @@index([is_active])
@@ -63,8 +63,8 @@ model Drivers {
   created_by     Int
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
-  trips Trips[]
-  creator Users @relation(fields: [created_by], references: [id])
+  trips          Trips[]
+  creator        Users    @relation(fields: [created_by], references: [id])
 
   @@index([license_number])
   @@index([is_active])
@@ -84,8 +84,8 @@ model Clients {
   updated_at     DateTime @updatedAt
 
   // Relationships
-  trips Trips[]
-  creator Users? @relation(fields: [created_by], references: [id])
+  trips   Trips[]
+  creator Users?  @relation(fields: [created_by], references: [id])
 
   @@index([is_active])
   @@index([created_by])
@@ -102,17 +102,16 @@ model Trips {
   destination_address String
   base_revenue        Float
   additional_charges  Float       @default(0)
-  total_revenue       Float
   status              Trip_Status
   created_by          Int
   created_at          DateTime    @default(now())
   updated_at          DateTime    @updatedAt
 
   // Relationships
-  client        Clients         @relation(fields: [client_id], references: [id], onDelete: Restrict)
-  driver        Drivers         @relation(fields: [driver_id], references: [id], onDelete: Restrict)
-  truck         Trucks          @relation(fields: [truck_id], references: [id], onDelete: Restrict)
-  creator       Users           @relation(fields: [created_by], references: [id], onDelete: Restrict)
+  client       Clients        @relation(fields: [client_id], references: [id], onDelete: Restrict)
+  driver       Drivers        @relation(fields: [driver_id], references: [id], onDelete: Restrict)
+  truck        Trucks         @relation(fields: [truck_id], references: [id], onDelete: Restrict)
+  creator      Users          @relation(fields: [created_by], references: [id], onDelete: Restrict)
   tripExpenses TripExpenses[]
 
   @@index([client_id])
@@ -126,14 +125,16 @@ model Trips {
 }
 
 model TripExpenses {
-  id           Int          @id @default(autoincrement())
-  trip_id      Int
-  type         Expense_Type
-  amount       Float
-  description  String
-  expense_date DateTime
-  created_at   DateTime     @default(now())
-  updated_at   DateTime     @updatedAt
+  id             Int          @id @default(autoincrement())
+  trip_id        Int
+  type           Expense_Type
+  amount         Float
+  description    String
+  receipt_number String?
+  vendor_name    String?
+  expense_date   DateTime
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
 
   // Relationships
   trip Trips @relation(fields: [trip_id], references: [id], onDelete: Cascade)
