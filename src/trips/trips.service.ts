@@ -14,7 +14,7 @@ import { Prisma } from 'generated/prisma';
 export class TripsService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async create(createTripDto: CreateTripDto) {
+  async create(createTripDto: CreateTripDto, userId: number) {
     try {
       const trip = await this.databaseService.trips.create({
         data: {
@@ -23,6 +23,7 @@ export class TripsService {
           end_date: createTripDto.end_date
             ? new Date(createTripDto.end_date)
             : null,
+          created_by: userId,
         },
       });
       return {
@@ -33,7 +34,7 @@ export class TripsService {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2003') {
           throw new BadRequestException(
-            'Invalid client_id, driver_id, truck_id, or created_by user ID',
+            'Invalid client_id, driver_id, truck_id, or user ID',
           );
         }
       }
@@ -181,7 +182,7 @@ export class TripsService {
         }
         if (error.code === 'P2003') {
           throw new BadRequestException(
-            'Invalid client_id, driver_id, truck_id, or created_by user ID',
+            'Invalid client_id, driver_id, truck_id, or user ID',
           );
         }
       }

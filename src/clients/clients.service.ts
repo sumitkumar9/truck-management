@@ -13,10 +13,13 @@ import { Prisma } from 'generated/prisma';
 export class ClientsService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async create(createClientDto: CreateClientDto) {
+  async create(createClientDto: CreateClientDto, userId: number) {
     try {
       const client = await this.databaseService.clients.create({
-        data: createClientDto,
+        data: {
+          ...createClientDto,
+          created_by: userId,
+        },
       });
       return {
         message: 'Client created Successfully',
@@ -28,7 +31,7 @@ export class ClientsService {
           throw new ConflictException('Client with this email already exists');
         }
         if (error.code === 'P2003') {
-          throw new BadRequestException('Invalid created_by user ID');
+          throw new BadRequestException('Invalid user ID');
         }
       }
       throw error;

@@ -9,7 +9,9 @@ import {
   ParseIntPipe,
   ValidationPipe,
   UseGuards,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import {
   ApiTags,
   ApiOperation,
@@ -25,6 +27,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/guards/roles.decorator';
 import { Role } from 'generated/prisma';
+import { JwtPayload } from '../auth/interface';
 import {
   TruckResponseDto,
   TrucksListResponseDto,
@@ -51,8 +54,11 @@ export class TrucksController {
   })
   @Post()
   @Roles(Role.ADMIN, Role.STAFF)
-  create(@Body(ValidationPipe) createTruckDto: CreateTruckDto) {
-    return this.trucksService.create(createTruckDto);
+  create(
+    @Body(ValidationPipe) createTruckDto: CreateTruckDto,
+    @Req() req: Request & { user: JwtPayload },
+  ) {
+    return this.trucksService.create(createTruckDto, req.user.id);
   }
 
   @ApiOperation({ summary: 'Get all trucks' })

@@ -13,10 +13,13 @@ import { Prisma } from 'generated/prisma';
 export class TrucksService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async create(createTruckDto: CreateTruckDto) {
+  async create(createTruckDto: CreateTruckDto, userId: number) {
     try {
       const truck = await this.databaseService.trucks.create({
-        data: createTruckDto,
+        data: {
+          ...createTruckDto,
+          created_by: userId,
+        },
       });
       return {
         message: 'Truck created Successfully',
@@ -28,7 +31,7 @@ export class TrucksService {
           throw new ConflictException('Truck with this number already exists');
         }
         if (error.code === 'P2003') {
-          throw new BadRequestException('Invalid created_by user ID');
+          throw new BadRequestException('Invalid user ID');
         }
       }
       throw error;

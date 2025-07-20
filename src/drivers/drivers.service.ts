@@ -13,10 +13,13 @@ import { Prisma } from 'generated/prisma';
 export class DriversService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async create(createDriverDto: CreateDriverDto) {
+  async create(createDriverDto: CreateDriverDto, userId: number) {
     try {
       const driver = await this.databaseService.drivers.create({
-        data: createDriverDto,
+        data: {
+          ...createDriverDto,
+          created_by: userId,
+        },
       });
       return {
         message: 'Driver created Successfully',
@@ -30,7 +33,7 @@ export class DriversService {
           );
         }
         if (error.code === 'P2003') {
-          throw new BadRequestException('Invalid created_by user ID');
+          throw new BadRequestException('Invalid user ID');
         }
       }
       throw error;

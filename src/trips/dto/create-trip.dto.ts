@@ -110,12 +110,4 @@ export class CreateTripDto {
   @IsEnum(Trip_Status)
   @IsNotEmpty()
   status: Trip_Status;
-
-  @ApiProperty({
-    description: 'ID of the user creating this trip',
-    example: 1,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  created_by: number;
 }

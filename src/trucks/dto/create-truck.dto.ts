@@ -63,12 +63,4 @@ export class CreateTruckDto {
   @IsEnum(Status)
   @IsOptional()
   current_status?: Status = Status.AVAILABLE;
-
-  @ApiProperty({
-    description: 'ID of the user creating this truck',
-    example: 1,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  created_by: number;
 }

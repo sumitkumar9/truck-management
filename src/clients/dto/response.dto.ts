@@ -14,7 +14,7 @@ export class ClientsListResponseDto {
   data: CreateClientDto[];
 }
 
-export class MessageResponseDto {
+export class ClientMessageResponseDto {
   @ApiProperty({ example: 'Client deleted Successfully' })
   message: string;
 }

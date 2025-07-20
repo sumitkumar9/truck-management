@@ -71,12 +71,4 @@ export class CreateClientDto {
   @IsBoolean()
   @IsOptional()
   is_active?: boolean = true;
-
-  @ApiProperty({
-    description: 'ID of the user creating this client',
-    example: 1,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  created_by: number;
 }

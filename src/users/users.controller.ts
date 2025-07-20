@@ -26,7 +26,7 @@ import { Role } from 'generated/prisma';
 import {
   UserResponseDto,
   UsersListResponseDto,
-  MessageResponseDto,
+  UserMessageResponseDto,
 } from './dto/response.dto';
 
 @ApiTags('Users')
@@ -88,7 +88,7 @@ export class UsersController {
   @ApiParam({ name: 'id', description: 'User ID', type: 'number', example: 1 })
   @ApiResponse({
     status: 200,
-    type: MessageResponseDto,
+    type: UserMessageResponseDto,
     description: 'User deleted successfully',
   })
   @ApiResponse({

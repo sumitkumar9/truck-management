@@ -9,7 +9,9 @@ import {
   ParseIntPipe,
   ValidationPipe,
   UseGuards,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import {
   ApiTags,
   ApiOperation,
@@ -25,6 +27,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/guards/roles.decorator';
 import { Role } from 'generated/prisma';
+import { JwtPayload } from '../auth/interface';
 import {
   DriverResponseDto,
   DriversListResponseDto,
@@ -51,8 +54,11 @@ export class DriversController {
   })
   @Post()
   @Roles(Role.ADMIN, Role.STAFF)
-  create(@Body(ValidationPipe) createDriverDto: CreateDriverDto) {
-    return this.driversService.create(createDriverDto);
+  create(
+    @Body(ValidationPipe) createDriverDto: CreateDriverDto,
+    @Req() req: Request & { user: JwtPayload },
+  ) {
+    return this.driversService.create(createDriverDto, req.user.id);
   }
 
   @ApiOperation({ summary: 'Get all drivers' })

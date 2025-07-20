@@ -62,12 +62,4 @@ export class CreateDriverDto {
   @IsBoolean()
   @IsOptional()
   is_active?: boolean = true;
-
-  @ApiProperty({
-    description: 'ID of the user creating this driver',
-    example: 1,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  created_by: number;
 }
