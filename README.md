@@ -183,7 +183,7 @@ The system provides comprehensive REST APIs for managing:
 ### Reports
 - **Driver Reports**: `GET /v1/reports/driver/:id`
 - **Truck Reports**: `GET /v1/reports/truck/:id`
-- **Client Reports**: `GET /v1/reports/client/:id?month=MM&year=YYYY`
+- **Client Reports**: `GET /v1/reports/client/:id`
 - **Trip Financial Analysis**: `GET /v1/reports/trip/:id`
 
 > **💡 For complete API documentation with request/response schemas, validation rules, and interactive testing, visit the Swagger documentation at `/api/docs` when the server is running.**
