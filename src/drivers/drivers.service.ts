@@ -18,7 +18,10 @@ export class DriversService {
       const driver = await this.databaseService.drivers.create({
         data: createDriverDto,
       });
-      return driver;
+      return {
+        message: 'Driver created Successfully',
+        data: driver,
+      };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -100,7 +103,10 @@ export class DriversService {
         where: { id },
         data: updateDriverDto,
       });
-      return driver;
+      return {
+        message: 'Driver updated Successfully',
+        data: driver,
+      };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
@@ -118,10 +124,10 @@ export class DriversService {
 
   async remove(id: number) {
     try {
-      const driver = await this.databaseService.drivers.delete({
+      await this.databaseService.drivers.delete({
         where: { id },
       });
-      return driver;
+      return { message: 'Driver Deleted Succesfully' };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {

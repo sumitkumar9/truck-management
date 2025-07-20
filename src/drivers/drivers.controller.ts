@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { DriversService } from './drivers.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
@@ -17,7 +18,7 @@ export class DriversController {
   constructor(private readonly driversService: DriversService) {}
 
   @Post()
-  create(@Body() createDriverDto: CreateDriverDto) {
+  create(@Body(ValidationPipe) createDriverDto: CreateDriverDto) {
     return this.driversService.create(createDriverDto);
   }
 
@@ -34,7 +35,7 @@ export class DriversController {
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateDriverDto: UpdateDriverDto,
+    @Body(ValidationPipe) updateDriverDto: UpdateDriverDto,
   ) {
     return this.driversService.update(id, updateDriverDto);
   }

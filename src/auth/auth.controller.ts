@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Post,
   Res,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
@@ -17,7 +18,10 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async signIn(@Body() signInDto: SignInDto, @Res() res: Response) {
+  async signIn(
+    @Body(ValidationPipe) signInDto: SignInDto,
+    @Res() res: Response,
+  ) {
     const result = await this.authService.login(
       signInDto.email,
       signInDto.password,
@@ -37,7 +41,7 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() registerDto: RegisterDto) {
+  async register(@Body(ValidationPipe) registerDto: RegisterDto) {
     return await this.authService.register(registerDto);
   }
 

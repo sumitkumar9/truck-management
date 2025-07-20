@@ -142,7 +142,17 @@ export class UsersService {
         where: { id },
         data: updateUserDto,
       });
-      return user;
+      return {
+        message: 'User Updated Successfully',
+        data: {
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          role: user.role,
+          is_active: user.is_active,
+        },
+      };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
@@ -158,10 +168,10 @@ export class UsersService {
 
   async remove(id: number) {
     try {
-      const user = await this.databaseService.users.delete({
+      await this.databaseService.users.delete({
         where: { id },
       });
-      return user;
+      return { message: 'User Deleted Successfully' };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
