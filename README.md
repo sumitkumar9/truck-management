@@ -148,7 +148,22 @@ npm run lint
 npm run format
 ```
 
-## API Endpoints
+## API Documentation
+
+### Interactive API Documentation (Swagger)
+
+The system provides comprehensive **Swagger/OpenAPI documentation** with an interactive interface for testing all endpoints.
+
+**📖 Access the API Documentation:**
+- **URL**: `http://localhost:3000/api/docs`
+- **Features**:
+  - Complete API reference with request/response schemas
+  - Interactive testing interface - try endpoints directly from the browser
+  - Authentication support - login once and test protected endpoints
+  - Detailed parameter descriptions and validation rules
+  - Response examples for all endpoints
+
+### API Endpoints Overview
 
 The system provides comprehensive REST APIs for managing:
 
@@ -170,6 +185,8 @@ The system provides comprehensive REST APIs for managing:
 - **Truck Reports**: `GET /v1/reports/truck/:id`
 - **Client Reports**: `GET /v1/reports/client/:id?month=MM&year=YYYY`
 - **Trip Financial Analysis**: `GET /v1/reports/trip/:id`
+
+> **💡 For complete API documentation with request/response schemas, validation rules, and interactive testing, visit the Swagger documentation at `/api/docs` when the server is running.**
 
 ## Database Schema
 
