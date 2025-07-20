@@ -8,6 +8,7 @@ import { TrucksModule } from './trucks/trucks.module';
 import { ClientsModule } from './clients/clients.module';
 import { TripsModule } from './trips/trips.module';
 import { ReportsModule } from './reports/reports.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ReportsModule } from './reports/reports.module';
     ClientsModule,
     TripsModule,
     ReportsModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
