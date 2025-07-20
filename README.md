@@ -78,6 +78,21 @@ npx prisma db seed
 npx prisma studio
 ```
 
+## Running the Application with Docker
+
+### Prerequisites
+- Docker installed on your machine
+
+### Build & Run Containers
+```bash
+docker-compose up --build
+```
+
+This will:
+- Start the PostgreSQL container
+- Start the application
+- App will be available at: http://localhost:3000
+
 ## Authentication System
 
 The system uses **JWT cookie-based authentication** with role-based access control.
