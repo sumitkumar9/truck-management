@@ -48,9 +48,9 @@ export class TripsController {
   }
 
   // Trip Expenses Endpoints
-  @Post(':id/expenses')
+  @Post(':tripId/expenses')
   createExpense(
-    @Param('id', ParseIntPipe) tripId: number,
+    @Param('tripId', ParseIntPipe) tripId: number,
     @Body(ValidationPipe) createTripExpenseDto: CreateTripExpenseDto,
   ) {
     return this.tripsService.createExpense(tripId, createTripExpenseDto);
