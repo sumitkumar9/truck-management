@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import {
-  IsBoolean,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
   IsString,
+  IsNotEmpty,
   Length,
+  IsEmail,
   MinLength,
+  IsEnum,
+  IsOptional,
+  IsBoolean,
 } from 'class-validator';
 import { Role } from 'generated/prisma';
 
-export class CreateUserDto {
+export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   @Length(1, 255)
