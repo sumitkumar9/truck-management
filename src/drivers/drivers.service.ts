@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class DriversService {
+  constructor(private readonly databaseService: DatabaseService) {}
+
   create(createDriverDto: CreateDriverDto) {
     return 'This action adds a new driver';
   }
